@@ -1,0 +1,6 @@
+LOYALTY PROGRAM
+
+ select  *
+	from	[VLOYALTYLS].[VLOYALTY].[DBO].[USER] aa
+	where	iscancelled = 0
+	and		isactive = 1
