@@ -1,0 +1,82 @@
+SELECT
+	TMP.[Row ID],
+	TMP.[Record Inserted On],
+	TMP.[Service Record ID],
+	TMP.[Crew ID],
+	TMP.[Rank ID],
+	TMP.[Berth Type],
+	TMP.[Pool Status],
+	TMP.[Mobilisation Cell ID],
+	TMP.[Planning Cell ID],
+	TMP.[CMP Cell ID],
+	TMP.[Seafarer Status],
+	TMP.[Service Start Date],
+	TMP.[Service End Date],
+	TMP.[Planning Status],
+	TMP.[Current Vessel ID],
+	TMP.[Planned Vessel ID],
+	TMP.[Last Vessel ID],
+	TMP.[Vessel Mgmt ID],
+	TMP.[Vessel Client],
+	TMP.[Mgmt Type],
+	TMP.[Vessel Technical Office],
+	TMP.[Vessel Fleet],
+	TMP.[Reliever Required],
+	TMP.[Is Berth Occupied],
+	TMP.[V.Ships Services Onboard Count],
+	TMP.[Crew Employment Type],
+	TMP.[Availability Date],
+	TMP.[NAN ID],
+	TMP.[Promotion Plan],
+	TMP.[Seafarer Technical Office ID],
+	TMP.[Seafarer Fleet ID],
+	TMP.[Seafarer Owner],
+	TMP.[Actual Overdue Today],
+	TMP.[Overdue Today Basis Original Contract]
+
+FROM (
+
+	SELECT
+		RowID as [Row ID],
+		RecInsertedOn as [Record Inserted On],
+		set_id as [Service Record ID],
+		crw_id as [Crew ID],
+		rnk_id as [Rank ID],
+		Berthtype as [Berth Type],
+		PoolStatus as [Pool Status],
+		mobilisationcell_id as [Mobilisation Cell ID],
+		PlanningCell_ID as [Planning Cell ID],
+		CPL_ID_CMP as [CMP Cell ID],
+		CURRENT_STATUS as [Seafarer Status],
+		StartDate as [Service Start Date],
+		EndDate as [Service End Date],
+		PlanningStatus as [Planning Status],
+		CASE WHEN Current_Status = 'ONBOARD' THEN [VESSEL_ID_FINAL] END AS [Current Vessel ID],
+		CASE WHEN Current_status <> 'ONBOARD' AND PlanningStatus is not NULL THEN [Vessel_ID_final] END AS [Planned Vessel ID],
+		CASE WHEN Current_status <> 'ONBOARD' AND PlanningStatus is NULL THEN [Vessel_ID_final] END AS [Last Vessel ID],
+		VMD_ID as [Vessel Mgmt ID],
+		CLIENT_FINAL as [Vessel Client],
+		MANAGEMENT_TYPE_FINAL as [Mgmt Type],
+		VESSEL_TECH_MGT_OFFICE as [Vessel Technical Office],
+		Fleet as [Vessel Fleet],
+		IsRelieverRequired as [Reliever Required],
+		IsBerthOcccupied as [Is Berth Occupied],
+		VSHIPS_SERVICE_ONBOARD_COUNT as [V.Ships Services Onboard Count],
+		CRW_employmentType as [Crew Employment Type],
+		AvailabilityDate as [Availability Date],
+		ASN_ID_NAN as [NAN ID],
+		Promotion_Plan as [Promotion Plan],
+		SF_TECH_OFFICE as [Seafarer Technical Office ID],
+		Seafarer_Fleet as [Seafarer Fleet ID],
+		OwnerSeafarer as [Seafarer Owner],
+		OVERDUE_TODAY30D as [Actual Overdue Today],
+		OverdueNoExtToday as [Overdue Today Basis Original Contract],
+		ROW_NUMBER() OVER(PARTITION BY crw_id, RecInsertedOn  ORDER BY RowID ASC) AS RN
+
+	FROM 
+		Aggregates.[dbo].[CREW_ActiveCrew]
+	WHERE 
+		cast(RecInsertedOn as date) >= '2022-01-01') TMP
+
+WHERE 
+	TMP.RN = 1

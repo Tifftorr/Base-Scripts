@@ -1,0 +1,45 @@
+SELECT DISTINCT
+
+	sd.Set_id [Service Record ID],
+	sd.Crw_Id [Crew ID],
+	sd.RNK_ID [Rank ID],
+	sd.sts_id [Status ID],
+	sts.sts_description as [Status],
+	sd.SGT_ID [Sign Off Reason ID],
+	sgt.sgt_description [Sign Off Reason],
+	sd.set_startdate [Start Date],
+	sd.Set_enddate [End Date],
+	sd.set_seadays [Sea Days],
+	sd.set_monthsonboard [Months Onboard],
+	sd.set_loadportID [Load Port ID],
+	sd.SET_DisportID [Disport ID],
+	sd.set_cancelled [Service Cancelled],
+	sd.ves_id [Vessel ID],
+	sd.set_activeStatus,
+	sd.svl_id [Berth ID],
+	sd.set_relieverID [Reliever Service Record ID],
+	sd.set_previousexp [Previous Experience],
+	sd.set_UTCUpdatedOn [Service Record UpdatedOn],
+	sd.set_updatedby [Service Recorded UpdatedBy ID],
+	sd.rnk_id_budgeted [Rank ID Budgeted],
+	sd.csa_id [Planning Status ID],
+	sd.sas_id [Service Active Status],
+	sd.lnp_id_joiner [Lineup ID Joiner],
+	sd.lnp_id_leaver [Lineup ID Leaver],
+	sd.set_contractlengthunit [Service Contract Length Unit],
+	sd.VMD_ID [Service Vessel Management ID],
+	sd.SET_IsRankChangedOnBoard [Rank Changed Onboard],
+	ext.ext_mobilisationacceptedby [Mobilisation Accepted By],
+	ext.ext_mobilisationacceptedon [Mobilisation Accepted On],
+	ext.CrewReadyOn [Crew Estimated Readiness Date],
+	ext.extensionreason [Crew Extension Reason],
+	ext.extendedby [Crew Extended By ID],
+	ext.ext_extendedon [Crew Extended On],
+	ext.ext_agreedbyseafarer [Extension Agreed by Seafarer],
+	ext.set_extensionvaliduntil [Extension Valid Until],
+	ext.set_isextensionapproved [Extension Approved]
+
+FROM shipsure.dbo.CRWSrvDetaiL (NOLOCK) SD
+left join shipsure.[dbo].[CRWSTATUS] (NOLOCK) STS on sts.sts_id = sd.sts_id
+left join shipsure.dbo.CRWSignOffType (NOLOCK) SGT on sgt.sgt_id = sd.sgt_id
+left join shipsure..[CRWSrvDetailExtension] (NOLOCK) ext on ext.set_id = sd.set_id and ext.ext_cancelled = 0

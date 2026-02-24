@@ -1,0 +1,36 @@
+--tCrewMovementTypes
+
+SELECT DISTINCT
+	sts_id AS [Status ID],
+	sts_desc AS [Status],
+	sts_sequence AS [Status Sequence],
+	sts_shortcode AS [Status Short Code],
+	sts_validsupn AS [Status Valid Supernumerary],
+	sts_validcrew AS [Status Valid Crew],
+	sts_validapplicant AS [Status Valid Applicant],
+	sts_ashore AS [Status Ashore],
+	sts_onboard AS [Status Onboard],
+	sts_validsick AS [Status Valid Sick],
+	sts_validprevious AS [Status Valid Previous],
+	sts_askreemploy AS [Status Valid Reemployment],
+	sts_validsearch AS [Status Valid Search],
+	sts_payrate AS [Status Pay Rate],
+	sts_leaveaccrued AS [Status Leave Accrued],
+	sts_paymultiplier AS [Status Pay Multiplier],
+	sts_leavemultiplier AS [Status Leave Multiplier],
+	sts_istaxable AS [Status Is Taxable],
+	sts_subjectemployersNI AS [Status Subject Employers NI],
+	sts_subjectemployeesNI AS [Status Subject Employees NI],
+	sts_subjectemployerspension AS [Status Subject Employers Pension],
+	sts_subjectemployeespension AS [Status Subject Employees Pension],
+	STS_SubjectTradeUnionDeductions AS [Status Subject Trade Union Deductions],
+	STS_ClientRecoverable AS [Status Client Recoverable],
+	STS_Active AS [Status Active],
+	STS_UpdatedBy AS [Status Updated By],
+	STS_UpdatedOn AS [Status Updated On],
+	STS_RestrictedStatus AS [Status Restricted Status],
+	STS_ServiceEvent AS [Status Service Event],
+	STS_FriendlyName AS [Status Friendly Name],
+	STS_PlanningApplicable AS [Status Planning Applicable]
+
+FROM shipsure.dbo.crwmovementtypes
